@@ -23,7 +23,7 @@ int main()
     std::cout << "Choose array size: ";
     std::cin >> size;
 
-    auto ptr = make_unique<priorityData[]>(size);
+    priorityData* arrayHeap = new priorityData[size];
 
     for (int i = 0; i < size; i++) 
     {
@@ -35,8 +35,8 @@ int main()
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Enter data for element: ";
         std::getline(std::cin, data);
-        ptr[i].dataValue = data;
-        ptr[i].priorityValue = priority;
+        arrayHeap[i].dataValue = data;
+        arrayHeap[i].priorityValue = priority;
     }
   
 
@@ -44,7 +44,7 @@ int main()
 
     for (int i = 0; i < size; i++) 
     {
-        std::cout << ptr[i].dataValue << std::endl;
+        std::cout << arrayHeap[i].dataValue << std::endl;
     }
 
     return 0;
