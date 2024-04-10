@@ -47,5 +47,6 @@ int main()
         std::cout << arrayHeap[i].dataValue << std::endl;
     }
 
+    delete[] arrayHeap;
     return 0;
 }
