@@ -5,8 +5,11 @@ int main()
     int size;
     std::string initFile, actFile, outputFile;
     char menuOption;
+    ArrayHeap* heap = nullptr;
+    std::vector<std::string> vectorData;
 
-    while (true) {
+    while (true) 
+    {
         std::cout << "Choose heap initalization method: (D)efault or (S)ize: ";
         std::cin >> menuOption;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -25,7 +28,8 @@ int main()
     {
     case 'D':
     {
-        ArrayHeap heap;
+        heap = new ArrayHeap();
+
     }
     break;
 
@@ -34,7 +38,8 @@ int main()
         std::cout << "What size do you want array: ";
         std::cin >> size;
         checkInt(size);
-        ArrayHeap heap(size);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        heap = new ArrayHeap(size);
     }
     break;
 
@@ -42,7 +47,30 @@ int main()
         break;
     }
 
+
     std::cout << "The option you selected is: " << menuOption << std::endl;
+
+    std::cout << "What is the name of your input file: ";
+    std::getline(std::cin, initFile);
+    heap->setInitFile(initFile);
+
+    std::cout << "Input name of output file: ";
+    std::getline(std::cin, outputFile);
+    heap->setOutputFile(outputFile);
+
+    std::cout << "Input name of action file: ";
+    std::getline(std::cin, actFile);
+    actFile += ".txt";
+
+    vectorData = heap->readandCheckAction(actFile);
+
+    std::cout << "Vector Data: " << std::endl;
+
+    for (int i = 0; i < vectorData.size(); i++) {
+        std::cout << vectorData.at(i) << std::endl;
+    }
+
+    delete heap;
 
     return 0;
 }

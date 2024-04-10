@@ -2,6 +2,8 @@
 #define HEAP_H
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
 
 struct priorityData
 {
@@ -25,19 +27,30 @@ class ArrayHeap
 private:
     priorityData* dataArray;
     int size;
+    std::string inputFile,outputFile;
 public:
-    ArrayHeap() : size(10) {
+    ArrayHeap() : size(10) 
+    {
         dataArray = new priorityData[size];
     }
 
-    ArrayHeap(int customSize) : size(customSize) {
+    ArrayHeap(int customSize) : size(customSize) 
+    {
         dataArray = new priorityData[size];
     }
 
-    ~ArrayHeap() {
+    ~ArrayHeap() 
+    {
         delete[] dataArray;
     }
     void printSize();
+
+    void setInitFile(std::string filename);
+
+    void setOutputFile(std::string filename);
+
+    std::vector<std::string> readandCheckAction(std::string filename);
+    
 };
 
 
