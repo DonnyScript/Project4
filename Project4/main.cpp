@@ -1,52 +1,48 @@
-#include <iostream>
-#include <memory>
-#include <string>
-#include "Check.h"
-
-struct priorityData 
-{
-    std::string dataValue;
-    int priorityValue;
-
-    priorityData() : priorityValue(0) {}
-
-    priorityData(const std::string& data, int priority) : dataValue(data), priorityValue(priority) {}
-
-    ~priorityData() {
-        std::cout << "priorityData object with dataValue: " << dataValue << " and priorityValue: " << priorityValue << " is destroyed." << std::endl;
-    }
-};
+#include "heap.h"
 
 int main() 
 {
     int size;
-    std::cout << "Choose array size: ";
-    std::cin >> size;
+    std::string initFile, actFile, outputFile;
+    char menuOption;
 
-    priorityData* arrayHeap = new priorityData[size];
+    while (true) {
+        std::cout << "Choose heap initalization method: (D)efault or (S)ize: ";
+        std::cin >> menuOption;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    for (int i = 0; i < size; i++) 
-    {
-        std::string data;
-        int priority;
-        std::cout << "Enter value of array element " << i << ": ";
-        std::cin >> priority;
-        checkInt(priority);
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Enter data for element: ";
-        std::getline(std::cin, data);
-        arrayHeap[i].dataValue = data;
-        arrayHeap[i].priorityValue = priority;
-    }
-  
+        menuOption = toupper(menuOption);
 
-    std::cout << "Array index and values" << std::endl;
-
-    for (int i = 0; i < size; i++) 
-    {
-        std::cout << arrayHeap[i].dataValue << std::endl;
+        if (menuOption == 'D' || menuOption == 'S') {
+            break;
+        }
+        else {
+            std::cout << "Invalid input. Please enter 'D', 'd', 'S', or 's'." << std::endl;
+        }
     }
 
-    delete[] arrayHeap;
+    switch (menuOption)
+    {
+    case 'D':
+    {
+        ArrayHeap heap;
+    }
+    break;
+
+    case 'S':
+    {
+        std::cout << "What size do you want array: ";
+        std::cin >> size;
+        checkInt(size);
+        ArrayHeap heap(size);
+    }
+    break;
+
+    default:
+        break;
+    }
+
+    std::cout << "The option you selected is: " << menuOption << std::endl;
+
     return 0;
 }
