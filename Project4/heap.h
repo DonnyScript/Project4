@@ -19,7 +19,6 @@ struct priorityData
     }
 };
 
-
 void checkInt(int& param);
 
 class ArrayHeap 
@@ -52,6 +51,5 @@ public:
     std::vector<std::string> readandCheckAction(std::string filename);
     
 };
-
 
 #endif 

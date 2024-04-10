@@ -28,7 +28,6 @@ void ArrayHeap::setOutputFile(std::string filename)
     ArrayHeap::outputFile = filename;
 }
 
-
 std::vector<std::string> ArrayHeap::readandCheckAction(std::string filename) {
     std::ofstream outputFile(ArrayHeap::outputFile, std::ios::app);
     std::vector<std::string> values;
