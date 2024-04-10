@@ -29,7 +29,6 @@ int main()
     case 'D':
     {
         heap = new ArrayHeap();
-
     }
     break;
 

@@ -1,6 +1,6 @@
 #include "heap.h"
 
-void checkInt(int& input)// To use set call with what you want to check at the parameter
+void checkInt(int& input)
 {
 	while (std::cin.fail())
 	{
