@@ -23,7 +23,7 @@ int main()
     std::cout << "Choose array size: ";
     std::cin >> size;
 
-    std::shared_ptr<priorityData[]> dynamicArray(new priorityData[size]);
+    auto ptr = make_unique<priorityData[]>(size);
 
     for (int i = 0; i < size; i++) 
     {
@@ -32,16 +32,19 @@ int main()
         std::cout << "Enter value of array element " << i << ": ";
         std::cin >> priority;
         checkInt(priority);
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Enter data for element: ";
-        std::cin >> data;
-        dynamicArray[i] = priorityData(data, priority);
+        std::getline(std::cin, data);
+        ptr[i].dataValue = data;
+        ptr[i].priorityValue = priority;
     }
+  
 
     std::cout << "Array index and values" << std::endl;
 
     for (int i = 0; i < size; i++) 
     {
-        std::cout << "Array index: " << i << " value: " << dynamicArray[i].priorityValue << " data: " << dynamicArray[i].dataValue << std::endl;
+        std::cout << ptr[i].dataValue << std::endl;
     }
 
     return 0;
