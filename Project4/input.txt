@@ -1,0 +1,6 @@
+I "string of data" 12
+I "GREAT CLASS" 11
+I "ACE" 13
+I "TEST" 5
+I "launch code" 6
+I "code" 7

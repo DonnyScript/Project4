@@ -6,7 +6,8 @@ int main()
     std::string initFile, actFile, outputFile;
     char menuOption;
     ArrayHeap* heap = nullptr;
-    std::vector<std::string> vectorData;
+    std::vector<std::string> inputData;
+    std::vector<std::string> actionData;
 
     while (true) 
     {
@@ -46,12 +47,20 @@ int main()
         break;
     }
 
-
     std::cout << "The option you selected is: " << menuOption << std::endl;
 
     std::cout << "What is the name of your input file: ";
     std::getline(std::cin, initFile);
-    heap->setInitFile(initFile);
+    initFile += ".txt";
+    inputData = heap->readandCheckAction(initFile);
+    heap->initialHeapFill(inputData);
+    heap->printHeap();
+
+    std::cout << std::endl;
+    heap->heapSort();
+    std::cout << std::endl;
+    heap->printHeap();
+
 
     std::cout << "Input name of output file: ";
     std::getline(std::cin, outputFile);
@@ -61,12 +70,11 @@ int main()
     std::getline(std::cin, actFile);
     actFile += ".txt";
 
-    vectorData = heap->readandCheckAction(actFile);
+    actionData = heap->readandCheckAction(actFile);
 
     std::cout << "Vector Data: " << std::endl;
-
-    for (int i = 0; i < vectorData.size(); i++) {
-        std::cout << vectorData.at(i) << std::endl;
+    for (int i = 0; i < actionData.size(); i++) {
+        std::cout << "Data at " << i << ":" << actionData.at(i) << std::endl;
     }
 
     delete heap;

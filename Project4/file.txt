@@ -1,0 +1,6 @@
+I "string of data" 32
+I "GREAT CLASS" 22
+R
+D
+A
+I "ONLY A" 4242

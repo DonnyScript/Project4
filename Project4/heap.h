@@ -4,19 +4,17 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <sstream>
+#include <algorithm>
 
 struct priorityData
 {
     std::string dataValue;
     int priorityValue;
 
-    priorityData() : dataValue("default"), priorityValue(0) {}
+    priorityData() : dataValue(""), priorityValue(NULL) {}
 
     priorityData(const std::string& data, int priority) : dataValue(data), priorityValue(priority) {}
-
-    ~priorityData() {
-        std::cout << "priorityData object with dataValue: " << dataValue << " and priorityValue: " << priorityValue << " is destroyed." << std::endl;
-    }
 };
 
 void checkInt(int& param);
@@ -25,17 +23,17 @@ class ArrayHeap
 {
 private:
     priorityData* dataArray;
-    int size;
+    int size,newSize;
     std::string inputFile,outputFile;
 public:
-    ArrayHeap() : size(10) 
+    ArrayHeap() : size(10), newSize(0)
     {
-        dataArray = new priorityData[size];
+        dataArray = new priorityData[size + 1];
     }
 
-    ArrayHeap(int customSize) : size(customSize) 
+    ArrayHeap(int customSize) : size(customSize), newSize(0)
     {
-        dataArray = new priorityData[size];
+        dataArray = new priorityData[size + 1];
     }
 
     ~ArrayHeap() 
@@ -44,12 +42,22 @@ public:
     }
     void printSize();
 
-    void setInitFile(std::string filename);
+    void printHeap();
 
     void setOutputFile(std::string filename);
 
     std::vector<std::string> readandCheckAction(std::string filename);
+
+    void initialHeapFill(std::vector<std::string> initData);
+
+    void heapSort();
     
+    void heapify(int index);
+
+    void addElement(priorityData element);
+
+    
+
 };
 
 #endif 

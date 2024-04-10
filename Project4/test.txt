@@ -1,4 +1,0 @@
-I "string of data"
-R
-D
-A
