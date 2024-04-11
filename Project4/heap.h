@@ -23,15 +23,15 @@ class ArrayHeap
 {
 private:
     priorityData* dataArray;
-    int size,newSize;
+    int size,initSize;
     std::string inputFile,outputFile;
 public:
-    ArrayHeap() : size(10), newSize(0)
+    ArrayHeap() : size(10), initSize(0)
     {
         dataArray = new priorityData[size + 1];
     }
 
-    ArrayHeap(int customSize) : size(customSize), newSize(0)
+    ArrayHeap(int customSize) : size(customSize), initSize(0)
     {
         dataArray = new priorityData[size + 1];
     }
@@ -56,7 +56,9 @@ public:
 
     void addElement(priorityData element);
 
-    
+    priorityData returnMinElement();
+
+    priorityData removeMinElement();
 
 };
 

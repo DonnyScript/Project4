@@ -102,15 +102,15 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
 
 void ArrayHeap::heapSort() 
 {
+    ArrayHeap::initSize = 0;
     for (int i = 0; i <= size; ++i)
     {
         if (dataArray[i].priorityValue != NULL)
         {
-            newSize++;
+            initSize++;
         }
     }
-    int testIndex = size / 2;
-    int startIndex = newSize / 2;
+    int startIndex = initSize / 2;
     for (int i = startIndex; i >= 0; i--) {
         heapify(i);
     }
@@ -123,10 +123,10 @@ void ArrayHeap::heapify(int index)
     int smallestIndex = index;
 
 
-    if (leftChildIndex <= newSize && dataArray[leftChildIndex].priorityValue <= dataArray[smallestIndex].priorityValue) {
+    if (leftChildIndex <= initSize && dataArray[leftChildIndex].priorityValue <= dataArray[smallestIndex].priorityValue) {
         smallestIndex = leftChildIndex;
     }
-    if (rightChildIndex <= newSize && dataArray[rightChildIndex].priorityValue <= dataArray[smallestIndex].priorityValue) {
+    if (rightChildIndex <= initSize && dataArray[rightChildIndex].priorityValue <= dataArray[smallestIndex].priorityValue) {
         smallestIndex = rightChildIndex;
     }
     if (dataArray[smallestIndex].priorityValue == NULL )
@@ -142,5 +142,52 @@ void ArrayHeap::heapify(int index)
 
 void ArrayHeap::addElement(priorityData element)
 {
+    int startPoint = initSize + 1;
+    dataArray[startPoint].priorityValue = element.priorityValue;
+    dataArray[startPoint].dataValue = element.dataValue;
+    ArrayHeap::heapSort();
+}
 
+priorityData ArrayHeap::returnMinElement()
+{
+    priorityData emptyArray("EmptyArrayOperation", NULL);
+    bool isEmpty = false;
+    for (int i = 1; i <= ArrayHeap::size; i++)
+    {
+        if (dataArray[i].priorityValue != NULL && dataArray[i].dataValue.empty()) 
+        {
+            isEmpty = true;
+        }
+    }
+    if (!isEmpty) 
+    {
+        std::cout << "Attempt to return element from empty heap" << std::endl;
+        return emptyArray;
+    }
+    return dataArray[1];
+}
+
+priorityData ArrayHeap::removeMinElement()
+{
+    priorityData emptyArray("EmptyArrayOperation", NULL);
+    bool isEmpty = false;
+    for (int i = 1; i <= ArrayHeap::size; i++)
+    {
+        if (dataArray[i].priorityValue != NULL && !dataArray[i].dataValue.empty())
+        {
+            isEmpty = true;
+        }
+    }
+    if (!isEmpty)
+    {
+        std::cout << "Attempt to return element from empty heap" << std::endl;
+        return emptyArray;
+    }
+
+    dataArray[1].dataValue = dataArray[initSize].dataValue;
+    dataArray[1].priorityValue = dataArray[initSize].priorityValue;
+    dataArray[initSize].dataValue = "";
+    dataArray[initSize].priorityValue = NULL;
+    heapSort();
+    printHeap(); 
 }

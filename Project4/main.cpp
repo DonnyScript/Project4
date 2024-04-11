@@ -8,7 +8,7 @@ int main()
     ArrayHeap* heap = nullptr;
     std::vector<std::string> inputData;
     std::vector<std::string> actionData;
-
+    priorityData newElement("code", 7);
     while (true) 
     {
         std::cout << "Choose heap initalization method: (D)efault or (S)ize: ";
@@ -54,13 +54,15 @@ int main()
     initFile += ".txt";
     inputData = heap->readandCheckAction(initFile);
     heap->initialHeapFill(inputData);
-    heap->printHeap();
 
     std::cout << std::endl;
     heap->heapSort();
     std::cout << std::endl;
     heap->printHeap();
 
+    std::cout << std::endl;
+
+    heap->removeMinElement();
 
     std::cout << "Input name of output file: ";
     std::getline(std::cin, outputFile);
