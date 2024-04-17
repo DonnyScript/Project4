@@ -11,10 +11,6 @@ void checkInt(int& input)
 	}
 }
 
-void ArrayHeap::printSize()
-{
-	std::cout << ArrayHeap::size << std::endl;
-}
 
 void ArrayHeap::printHeap()
 {
@@ -103,6 +99,7 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
 void ArrayHeap::heapSort() 
 {
     ArrayHeap::initSize = 0;
+   
     for (int i = 0; i <= size; ++i)
     {
         if (dataArray[i].priorityValue != NULL)
@@ -110,6 +107,7 @@ void ArrayHeap::heapSort()
             initSize++;
         }
     }
+    
     int startIndex = initSize / 2;
     for (int i = startIndex; i >= 0; i--) {
         heapify(i);
@@ -142,6 +140,10 @@ void ArrayHeap::heapify(int index)
 
 void ArrayHeap::addElement(priorityData element)
 {
+    if (ArrayHeap::initSize == ArrayHeap::size) 
+    {
+       ArrayHeap::doubleArraySize();
+    }
     int startPoint = initSize + 1;
     dataArray[startPoint].priorityValue = element.priorityValue;
     dataArray[startPoint].dataValue = element.dataValue;
@@ -150,26 +152,40 @@ void ArrayHeap::addElement(priorityData element)
 
 priorityData ArrayHeap::returnMinElement()
 {
-    priorityData emptyArray("EmptyArrayOperation", NULL);
-    bool isEmpty = false;
-    for (int i = 1; i <= ArrayHeap::size; i++)
-    {
-        if (dataArray[i].priorityValue != NULL && dataArray[i].dataValue.empty()) 
-        {
-            isEmpty = true;
-        }
-    }
-    if (!isEmpty) 
+    priorityData InvalidArray("InvalidArrayOperation", NULL);
+    
+    if (!isEmpty()) 
     {
         std::cout << "Attempt to return element from empty heap" << std::endl;
-        return emptyArray;
+        return InvalidArray;
     }
+
     return dataArray[1];
 }
 
 priorityData ArrayHeap::removeMinElement()
 {
-    priorityData emptyArray("EmptyArrayOperation", NULL);
+    priorityData InvalidArray("InvalidArrayOperation", NULL);
+    priorityData removedElement;
+
+    if (!isEmpty())
+    {
+        std::cout << "Attempt to return element from empty heap" << std::endl;
+        return InvalidArray;
+    }
+
+    removedElement.dataValue = dataArray[1].dataValue;
+    removedElement.priorityValue = dataArray[1].priorityValue;
+    dataArray[1].dataValue = dataArray[initSize].dataValue;
+    dataArray[1].priorityValue = dataArray[initSize].priorityValue;
+    dataArray[initSize].dataValue = "";
+    dataArray[initSize].priorityValue = NULL;
+    heapSort();
+    return removedElement;
+}
+
+bool ArrayHeap::isEmpty()
+{
     bool isEmpty = false;
     for (int i = 1; i <= ArrayHeap::size; i++)
     {
@@ -178,16 +194,79 @@ priorityData ArrayHeap::removeMinElement()
             isEmpty = true;
         }
     }
-    if (!isEmpty)
-    {
-        std::cout << "Attempt to return element from empty heap" << std::endl;
-        return emptyArray;
+    return isEmpty;
+}
+
+void ArrayHeap::doubleArraySize() {
+    int newSize = size * 2;
+
+    priorityData* newArray = new priorityData[newSize + 1];
+
+    for (int i = 1; i <= initSize; ++i) {
+        newArray[i] = dataArray[i];
     }
 
-    dataArray[1].dataValue = dataArray[initSize].dataValue;
-    dataArray[1].priorityValue = dataArray[initSize].priorityValue;
-    dataArray[initSize].dataValue = "";
-    dataArray[initSize].priorityValue = NULL;
-    heapSort();
-    printHeap(); 
+    delete[] dataArray;
+
+    dataArray = newArray;
+    size = newSize;
+}
+
+std::string ArrayHeap::toString() {
+    std::stringstream ss;
+    ss << "[";
+
+    for (int i = 1; i <= initSize; ++i) {
+        ss << "(" << "\"" << dataArray[i].dataValue << "\"" << "," << dataArray[i].priorityValue << ")";
+        if (i < initSize) {
+            ss << "; ";
+        }
+    }
+
+    ss << "]";
+    return ss.str();
+}
+
+void ArrayHeap::userFillArray()
+{
+    int startPos = 0; 
+
+    if (ArrayHeap::initSize == ArrayHeap::size)
+    {
+        std::cout << "Array is full doubling" << std::endl;
+        ArrayHeap::doubleArraySize();
+    }
+
+    if (ArrayHeap::initSize != ArrayHeap::size)
+    {
+        startPos = initSize + 1;
+    }
+    else
+    {
+        startPos = ArrayHeap::size;
+    }
+
+    std::cout << "Starting user array fill, here is the current array:" << std::endl;
+    ArrayHeap::printHeap();
+    std::cout << std::endl;
+    std::cout << "You have " << ArrayHeap::size - ArrayHeap::initSize << " positions to fill" << std::endl;
+
+    for (int i = startPos; i <= ArrayHeap::size; i++)
+    {
+        std::string tempString;
+        int tempPriority; 
+
+        std::cout << "Enter string data: ";
+        std::getline(std::cin, tempString);
+
+        std::cout << "Enter priority: ";
+        std::cin >> tempPriority;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        checkInt(tempPriority);
+
+        dataArray[i].dataValue = tempString;
+        dataArray[i].priorityValue = tempPriority;
+
+        std::cout << "String data: " << tempString << ", Priority: " << tempPriority << std::endl << std::endl;
+    }
 }

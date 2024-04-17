@@ -4,28 +4,31 @@ int main()
 {
     int size;
     std::string initFile, actFile, outputFile;
-    char menuOption;
+    char initOption, actionOption;
     ArrayHeap* heap = nullptr;
     std::vector<std::string> inputData;
     std::vector<std::string> actionData;
-    priorityData newElement("code", 7);
+    priorityData returnedElement, removedElement;
+
     while (true) 
     {
         std::cout << "Choose heap initalization method: (D)efault or (S)ize: ";
-        std::cin >> menuOption;
+        std::cin >> initOption;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        menuOption = toupper(menuOption);
+        initOption = toupper(initOption);
 
-        if (menuOption == 'D' || menuOption == 'S') {
+        if (initOption == 'D' || initOption == 'S') 
+        {
             break;
         }
-        else {
+        else 
+        {
             std::cout << "Invalid input. Please enter 'D', 'd', 'S', or 's'." << std::endl;
         }
     }
 
-    switch (menuOption)
+    switch (initOption)
     {
     case 'D':
     {
@@ -47,37 +50,72 @@ int main()
         break;
     }
 
-    std::cout << "The option you selected is: " << menuOption << std::endl;
-
     std::cout << "What is the name of your input file: ";
     std::getline(std::cin, initFile);
     initFile += ".txt";
     inputData = heap->readandCheckAction(initFile);
     heap->initialHeapFill(inputData);
+    heap->heapSort(); 
 
-    std::cout << std::endl;
-    heap->heapSort();
-    std::cout << std::endl;
-    heap->printHeap();
+    while (true)
+    {
+        std::cout << "Choose action mode: (U)ser, (F)ile, or (B)oth ";
+        std::cin >> actionOption;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    std::cout << std::endl;
+        actionOption = toupper(actionOption);
 
-    heap->removeMinElement();
+        if (actionOption == 'U' || actionOption == 'F' || actionOption == 'B')
+        {
+            break;
+        }
+        else
+        {
+            std::cout << "Invalid input. Please enter 'U', 'u', 'F','f','B', or 'b' ." << std::endl;
+        }
+    }
+
+    switch (actionOption)
+    {
+    case 'U':
+    {
+        std::cout << std::endl;
+
+        heap->userFillArray();
+    }
+    break;
+
+    case 'F':
+    {
+        std::cout << "Input name of action file: ";
+        std::getline(std::cin, actFile);
+        actFile += ".txt";
+        actionData = heap->readandCheckAction(actFile);
+    }
+    break;
+
+    case 'B':
+    {
+        std::cout << "Input name of action file: ";
+        std::getline(std::cin, actFile);
+        actFile += ".txt";
+        actionData = heap->readandCheckAction(actFile);
+    }
+    break;
+
+    default:
+        break;
+    }
+
+   std::cout << "Heap respresentation after action: " << std::endl;
+   heap->printHeap();
+   std::cout << std::endl;
 
     std::cout << "Input name of output file: ";
     std::getline(std::cin, outputFile);
     heap->setOutputFile(outputFile);
 
-    std::cout << "Input name of action file: ";
-    std::getline(std::cin, actFile);
-    actFile += ".txt";
 
-    actionData = heap->readandCheckAction(actFile);
-
-    std::cout << "Vector Data: " << std::endl;
-    for (int i = 0; i < actionData.size(); i++) {
-        std::cout << "Data at " << i << ":" << actionData.at(i) << std::endl;
-    }
 
     delete heap;
 

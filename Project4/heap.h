@@ -40,7 +40,6 @@ public:
     {
         delete[] dataArray;
     }
-    void printSize();
 
     void printHeap();
 
@@ -53,12 +52,20 @@ public:
     void heapSort();
     
     void heapify(int index);
-
+   
     void addElement(priorityData element);
 
     priorityData returnMinElement();
 
     priorityData removeMinElement();
+
+    bool isEmpty();
+
+    void doubleArraySize();
+
+    std::string toString();
+
+    void userFillArray(); 
 
 };
 
