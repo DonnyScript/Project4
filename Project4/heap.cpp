@@ -12,12 +12,12 @@ void checkInt(int& input)
 }
 
 
-void ArrayHeap::printHeap()
+void ArrayHeap::toString()
 {
     std::cout << "Heap Data: " << std::endl;
     for (int i = 1; i <= ArrayHeap::size; i++) 
     {
-        std::cout << "At position " << i << ": " << "[ " << dataArray[i].dataValue << ", " << dataArray[i].priorityValue << " ]" << std::endl;
+        std::cout << "At position " << i << ": " << "( " << dataArray[i].dataValue << ", " << dataArray[i].priorityValue << " )" << std::endl;
     }
 }
 
@@ -93,6 +93,55 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
         ValueIndex += 3;
         PrioirtyIndex += 3;
     }
+}
+
+std::string trim(const std::string& str) {
+    size_t first = str.find_first_not_of(' ');
+    if (std::string::npos == first) {
+        return str;
+    }
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
+}
+
+void ArrayHeap::preformFileActions(std::vector<std::string> actionValues)
+{
+    if (ArrayHeap::initSize == ArrayHeap::size)
+    {
+        std::cout << "Array is full doubling the size" << std::endl;
+        ArrayHeap::doubleArraySize();
+    }
+
+    std::transform(actionValues.begin(), actionValues.end(), actionValues.begin(), trim);
+    int insertHeapCtr = ArrayHeap::initSize + 1;
+    
+    for (int i = 0; i < actionValues.size(); i++)
+    {
+        if (actionValues[i] == "I")
+        {
+            int tempString;
+
+            dataArray[insertHeapCtr].dataValue = actionValues[i + 1];
+            tempString = stoi(actionValues[i + 2]);
+            dataArray[insertHeapCtr].priorityValue = tempString;
+            insertHeapCtr++;
+
+        }
+        else if (actionValues[i] == "R")
+        {
+            dataArray[1].dataValue = "";
+            dataArray[1].priorityValue = NULL;
+        }
+        else if (actionValues[i] == "S")
+        {
+            std::cout << "Top element is: " << "(" << "\"" << dataArray[1].dataValue << "\"" << "," << dataArray[1].priorityValue << ")" << std::endl;
+        }
+        else if (actionValues[i] == "A")
+        {
+            ArrayHeap::toString();
+        }
+    }
+    ArrayHeap::initSize = insertHeapCtr - 1;
 }
 
 
@@ -207,30 +256,16 @@ void ArrayHeap::doubleArraySize() {
     }
 
     delete[] dataArray;
-
-    dataArray = newArray;
-    size = newSize;
+    ArrayHeap::dataArray = newArray;
+    ArrayHeap::size = newSize;
+    std::cout << "Array size doubled to: " << ArrayHeap::size << std::endl;
 }
 
-std::string ArrayHeap::toString() {
-    std::stringstream ss;
-    ss << "[";
 
-    for (int i = 1; i <= initSize; ++i) {
-        ss << "(" << "\"" << dataArray[i].dataValue << "\"" << "," << dataArray[i].priorityValue << ")";
-        if (i < initSize) {
-            ss << "; ";
-        }
-    }
-
-    ss << "]";
-    return ss.str();
-}
-
-void ArrayHeap::userFillArray()
+void ArrayHeap::userActions()
 {
     int startPos = 0; 
-
+    char actionOption;
     if (ArrayHeap::initSize == ArrayHeap::size)
     {
         std::cout << "Array is full doubling" << std::endl;
@@ -246,27 +281,113 @@ void ArrayHeap::userFillArray()
         startPos = ArrayHeap::size;
     }
 
-    std::cout << "Starting user array fill, here is the current array:" << std::endl;
-    ArrayHeap::printHeap();
+    std::cout << "Starting user actions, here is the current array:" << std::endl;
+    ArrayHeap::toString();
     std::cout << std::endl;
     std::cout << "You have " << ArrayHeap::size - ArrayHeap::initSize << " positions to fill" << std::endl;
 
-    for (int i = startPos; i <= ArrayHeap::size; i++)
+    for (int i = startPos; i <= ArrayHeap::size;)
     {
-        std::string tempString;
-        int tempPriority; 
+        while (true)
+        {
+            std::cout << "Choose action method: I(nsesrt), R(emove), S(ee top element), A(ll elements in string), or Q(uit):";
+            std::cin >> actionOption;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        std::cout << "Enter string data: ";
-        std::getline(std::cin, tempString);
+            actionOption = toupper(actionOption);
 
-        std::cout << "Enter priority: ";
-        std::cin >> tempPriority;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        checkInt(tempPriority);
+            if (actionOption == 'I' || actionOption == 'R' || actionOption == 'S' || actionOption == 'A' || actionOption == 'Q')
+            {
+                break;
+            }
+            else
+            {
+                std::cout << "Invalid input. Please enter 'I', 'R', 'S', or 'A' " << std::endl;
+            }
+        }
 
-        dataArray[i].dataValue = tempString;
-        dataArray[i].priorityValue = tempPriority;
+        switch (actionOption)
+        {
+        case 'I':
+        {
+            std::string tempString;
+            int tempPriority;
 
-        std::cout << "String data: " << tempString << ", Priority: " << tempPriority << std::endl << std::endl;
+            std::cout << "Enter string data: ";
+            std::getline(std::cin, tempString);
+
+            std::cout << "Enter priority: ";
+            std::cin >> tempPriority;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            checkInt(tempPriority);
+
+            dataArray[i].dataValue = tempString;
+            dataArray[i].priorityValue = tempPriority;
+
+            std::cout << "String data: " << tempString << ", Priority: " << tempPriority << std::endl << std::endl;
+            i++;
+        }
+        break;
+
+        case 'R':
+        {
+            dataArray[1].dataValue = "";
+            dataArray[1].priorityValue = NULL;
+        }
+        break;
+
+        case 'S':
+        {
+            std::cout << "Top element is: " << "(" << "\"" << dataArray[1].dataValue << "\"" << "," << dataArray[1].priorityValue << ")" << std::endl;
+        }
+        break;
+
+        case 'A':
+        {
+            ArrayHeap::toString();
+        }
+        break;
+
+        case 'Q':
+        {
+            return;
+        }
+
+        default:
+            break;
+        }    
     }
+}
+
+void PriorityQueue::printStats()
+{
+    std::ofstream outputFile(PriorityQueue::outputFile, std::ios::app);
+
+    std::cout << "Heap created with size: " << PriorityQueue::size << std::endl;
+    std::cout << "Priority Queue Initialization" << std::endl;
+    std::cout << ElementsInserted << " elements inserted" << std::endl;
+    std::cout << PriorityQueue::initHeapDown << " number of heap-down actions to create heap order" << std::endl;
+    //Print Queue if number of elements is less than or equal 20
+    std::cout << "Priority Queue Initialization complete" << std::endl;
+    //Print action file and result of action
+   
+    std::cout << "User Action File Complete" << std::endl << std::endl;
+    std::cout << "User Action Interface" << std::endl; //List Action and result of action
+
+    //______________________________________________________________________________________________________________________//
+
+
+    outputFile << "Heap created with size: " << PriorityQueue::size << std::endl;
+    outputFile << "Priority Queue Initialization" << std::endl;
+    outputFile << ElementsInserted << " elements inserted" << std::endl;
+    outputFile << PriorityQueue::initHeapDown << " number of heap-down actions to create heap order" << std::endl;
+    //Print Queue if number of elements is less than or equal 20
+    outputFile << "Priority Queue Initialization complete" << std::endl;
+    //Print action file and result of action
+
+    outputFile << "User Action File Complete" << std::endl << std::endl;
+    outputFile << "User Action Interface" << std::endl; //List Action and result of action
+
+
+
 }

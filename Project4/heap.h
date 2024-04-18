@@ -7,6 +7,7 @@
 #include <sstream>
 #include <algorithm>
 
+
 struct priorityData
 {
     std::string dataValue;
@@ -21,11 +22,12 @@ void checkInt(int& param);
 
 class ArrayHeap 
 {
-private:
+protected:
     priorityData* dataArray;
     int size,initSize;
     std::string inputFile,outputFile;
-public:
+    int ElementsInserted, initHeapDown;
+public: 
     ArrayHeap() : size(10), initSize(0)
     {
         dataArray = new priorityData[size + 1];
@@ -41,13 +43,15 @@ public:
         delete[] dataArray;
     }
 
-    void printHeap();
+    void toString();
 
     void setOutputFile(std::string filename);
 
     std::vector<std::string> readandCheckAction(std::string filename);
 
-    void initialHeapFill(std::vector<std::string> initData);
+    void initialHeapFill(std::vector<std::string> initData); 
+
+    void preformFileActions(std::vector<std::string> actionValues); 
 
     void heapSort();
     
@@ -63,10 +67,15 @@ public:
 
     void doubleArraySize();
 
-    std::string toString();
-
-    void userFillArray(); 
+    void userActions(); 
 
 };
+class PriorityQueue : public ArrayHeap
+{
+public:
+    PriorityQueue() : ArrayHeap() {}
+    PriorityQueue(int customSize) : ArrayHeap(customSize) {}
 
+    void printStats();
+};
 #endif 

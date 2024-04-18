@@ -5,7 +5,7 @@ int main()
     int size;
     std::string initFile, actFile, outputFile;
     char initOption, actionOption;
-    ArrayHeap* heap = nullptr;
+    PriorityQueue* heap = nullptr;
     std::vector<std::string> inputData;
     std::vector<std::string> actionData;
     priorityData returnedElement, removedElement;
@@ -32,7 +32,7 @@ int main()
     {
     case 'D':
     {
-        heap = new ArrayHeap();
+        heap = new PriorityQueue();
     }
     break;
 
@@ -42,7 +42,7 @@ int main()
         std::cin >> size;
         checkInt(size);
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        heap = new ArrayHeap(size);
+        heap = new PriorityQueue(size);
     }
     break;
 
@@ -59,7 +59,7 @@ int main()
 
     while (true)
     {
-        std::cout << "Choose action mode: (U)ser, (F)ile, or (B)oth ";
+        std::cout << "Choose action mode: (U)ser, (F)ile, or (B)oth: ";
         std::cin >> actionOption;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -79,9 +79,7 @@ int main()
     {
     case 'U':
     {
-        std::cout << std::endl;
-
-        heap->userFillArray();
+        heap->userActions();
     }
     break;
 
@@ -91,6 +89,7 @@ int main()
         std::getline(std::cin, actFile);
         actFile += ".txt";
         actionData = heap->readandCheckAction(actFile);
+        heap->preformFileActions(actionData);
     }
     break;
 
@@ -100,6 +99,9 @@ int main()
         std::getline(std::cin, actFile);
         actFile += ".txt";
         actionData = heap->readandCheckAction(actFile);
+        heap->preformFileActions(actionData);
+        heap->userActions();
+        heap->toString();
     }
     break;
 
@@ -107,15 +109,9 @@ int main()
         break;
     }
 
-   std::cout << "Heap respresentation after action: " << std::endl;
-   heap->printHeap();
-   std::cout << std::endl;
-
     std::cout << "Input name of output file: ";
     std::getline(std::cin, outputFile);
     heap->setOutputFile(outputFile);
-
-
 
     delete heap;
 
