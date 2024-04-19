@@ -1,0 +1,50 @@
+I "EXCELLENT GROUP" 9
+I "CHAMPION" 14
+I "QUIZ" 4
+I "project start" 8
+I "programming" 6
+I "OUTSTANDING TEAM" 10
+I "MASTER" 12
+I "EXAM" 5
+I "product launch" 7
+I "debugging" 9
+I "TOP CLASS" 11
+I "WINNER" 15
+I "POP QUIZ" 6
+I "system update" 7
+I "algorithm" 8
+I "ELITE SQUAD" 13
+I "PRODIGY" 16
+I "FINAL TEST" 5
+I "application launch" 8
+I "coding" 10
+I "SUPERIOR CLASS" 12
+I "VICTOR" 14
+I "PUZZLE" 3
+I "software release" 9
+I "development" 11
+I "PREMIUM TEAM" 10
+I "GENIUS" 15
+I "QUIZ NIGHT" 7
+I "patch installation" 6
+I "code review" 8
+I "EXEMPLARY GROUP" 11
+I "LEADER" 13
+I "TESTING" 5
+I "product update" 7
+I "debugging session" 8
+I "MASTER CLASS" 12
+I "CHAMP" 15
+I "QUIZ TIME" 6
+I "system maintenance" 9
+I "algorithmic" 7
+I "ELITE TEAM" 11
+I "PRO" 16
+I "FINAL EXAM" 5
+I "software deployment" 10
+I "coding challenge" 8
+I "SUPERIOR TEAM" 12
+I "VICTORY" 14
+I "Warfare" 70
+I "America" 44
+I "position" 19

@@ -27,6 +27,11 @@ void ArrayHeap::setOutputFile(std::string filename)
     ArrayHeap::outputFile = filename;
 }
 
+void ArrayHeap::setActionFile(std::string filename)
+{
+    ArrayHeap::actionFile = filename;
+}
+
 std::vector<std::string> ArrayHeap::readandCheckAction(std::string filename) 
 {
     std::ofstream outputFile(ArrayHeap::outputFile, std::ios::app);
@@ -74,14 +79,21 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
     int priorityData;
     int PrioirtyIndex = 2;
     int ValueIndex = 1;
-    for (int i = 1; i <= ArrayHeap::size ; i++)
+    for (int i = 1; i <= initData.size(); i++) 
     {
+        if (ArrayHeap::initSize == ArrayHeap::size)
+        {
+            
+            ArrayHeap::doubleArraySize();
+        }
+
         if (PrioirtyIndex > initData.size())
         {
             return;
         }
+
         dataArray[i].dataValue = initData.at(ValueIndex);
-        try 
+        try
         {
             priorityData = std::stoi(initData.at(PrioirtyIndex));
             dataArray[i].priorityValue = priorityData;
@@ -93,8 +105,10 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
         ValueIndex += 3;
         PrioirtyIndex += 3;
         ArrayHeap::ElementsInserted++;
+        ArrayHeap::initSize++; 
     }
 }
+
 
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
@@ -184,6 +198,7 @@ void ArrayHeap::heapify(int index)
     else if (smallestIndex != index) 
     {
         std::swap(dataArray[index], dataArray[smallestIndex]);
+        ArrayHeap::totalHeapDown++;
         heapify(smallestIndex);
     }
 }
@@ -351,7 +366,6 @@ void ArrayHeap::userActions()
             userActionValues.push_back("R");
             dataArray[1].dataValue = "";
             dataArray[1].priorityValue = NULL;
-
             userRequestedRemoves++;
         }
         break;
@@ -391,8 +405,8 @@ void ArrayHeap::userActions()
 
 void PriorityQueue::printStats()
 {
-    //std::ofstream outputFile(PriorityQueue::outputFile, std::ios::app);
-    std::ifstream file("file.txt");
+    std::ofstream outputFile(PriorityQueue::outputFile, std::ios::app);
+    std::ifstream file(PriorityQueue::actionFile);
     int totalUserHeapActions = userRequestedInserts + userRequestedRemoves + userRequestedTop + userRequestedPrint;
 
     if (!file.is_open()) {
@@ -438,7 +452,45 @@ void PriorityQueue::printStats()
     std::cout << "     Total number of heap-up actions:          " << PriorityQueue::totalHeapUp << std::endl;
     std::cout << "     Total number of heap-down actions:        " << PriorityQueue::totalHeapDown << std::endl;
 
+    //_______________________________________________________________________________________________________________//
+    
+    outputFile << "Heap created with size: " << PriorityQueue::size << std::endl;
+    outputFile << "Priority Queue Initialization" << std::endl;
+    outputFile << " Elements inserted: " << PriorityQueue::ElementsInserted << std::endl;
+    outputFile << " Number of heap-down actions to create heap order: " << PriorityQueue::initHeapDown << std::endl << std::endl;
 
+    if (PriorityQueue::size <= 20)
+    {
+        PriorityQueue::toString();
+        outputFile << std::endl;
+    }
+
+    outputFile << "Priority Queue Initialization complete" << std::endl << std::endl;
+    outputFile << "User Action File " << std::endl;
+    std::string Outputline;
+    while (std::getline(file, Outputline)) {
+        outputFile << line << std::endl;
+    }
+
+    outputFile << "User Action File Complete" << std::endl << std::endl;
+    outputFile << "User Action Interface" << std::endl << std::endl;
+
+    for (int i = 0; i < userActionValues.size(); i++)
+    {
+        outputFile << userActionValues[i];
+    }
+    outputFile << "User Action Interface Complete" << std::endl << std::endl;
+
+    outputFile << "Total number of Inserts - Initialization: " << PriorityQueue::ElementsInserted << std::endl;
+    outputFile << "Total number of heap-down actions - Initialization: " << PriorityQueue::initHeapDown << std::endl;
+    outputFile << "Total number of user requested Inserts: " << PriorityQueue::userRequestedInserts << std::endl;
+    outputFile << "Total number of user requested Removes: " << PriorityQueue::userRequestedRemoves << std::endl;
+    outputFile << "Total number of user requested Return Top: " << PriorityQueue::userRequestedTop << std::endl;
+    outputFile << "Total number of user requested Print: " << PriorityQueue::userRequestedPrint << std::endl;
+    outputFile << "Total number of heap actions for user actions: " << totalUserHeapActions << std::endl;
+    outputFile << "     Total number of heap-up actions:          " << PriorityQueue::totalHeapUp << std::endl;
+    outputFile << "     Total number of heap-down actions:        " << PriorityQueue::totalHeapDown << std::endl;
 
     file.close();
+    outputFile.close();
 }

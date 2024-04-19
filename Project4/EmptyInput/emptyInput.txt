@@ -1,0 +1,23 @@
+Heap created with size: 51
+Priority Queue Initialization
+ Elements inserted: 0
+ Number of heap-down actions to create heap order: 0
+
+Priority Queue Initialization complete
+
+User Action File 
+User Action File Complete
+
+User Action Interface
+
+User Action Interface Complete
+
+Total number of Inserts - Initialization: 0
+Total number of heap-down actions - Initialization: 0
+Total number of user requested Inserts: 0
+Total number of user requested Removes: 0
+Total number of user requested Return Top: 0
+Total number of user requested Print: 0
+Total number of heap actions for user actions: 0
+     Total number of heap-up actions:          0
+     Total number of heap-down actions:        217

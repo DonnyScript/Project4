@@ -55,6 +55,7 @@ int main()
     initFile += ".txt";
     inputData = heapQueue->readandCheckAction(initFile);
     heapQueue->initialHeapFill(inputData);
+    heapQueue->toString();
     heapQueue->heapSort(); 
 
     while (true)
@@ -88,6 +89,7 @@ int main()
         std::cout << "Input name of action file: ";
         std::getline(std::cin, actFile);
         actFile += ".txt";
+        heapQueue->setActionFile(actFile);
         actionData = heapQueue->readandCheckAction(actFile);
         heapQueue->preformFileActions(actionData);
     }

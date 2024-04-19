@@ -25,7 +25,7 @@ class ArrayHeap
 protected:
     priorityData* dataArray;
     int size,initSize;
-    std::string inputFile, outputFile;
+    std::string actionFile, outputFile;
     std::vector<std::string> userActionValues;
     int ElementsInserted = 0, initHeapDown = 0, userRequestedInserts = 0, userRequestedRemoves = 0, userRequestedTop = 0;
     int userRequestedPrint = 0, totalHeapUp = 0, totalHeapDown = 0;
@@ -48,6 +48,8 @@ public:
     void toString();
 
     void setOutputFile(std::string filename);
+
+    void setActionFile(std::string filename);
 
     std::vector<std::string> readandCheckAction(std::string filename);
 
