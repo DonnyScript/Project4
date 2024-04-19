@@ -92,6 +92,7 @@ void ArrayHeap::initialHeapFill(std::vector<std::string> initData)
         }
         ValueIndex += 3;
         PrioirtyIndex += 3;
+        ArrayHeap::ElementsInserted++;
     }
 }
 
@@ -124,8 +125,8 @@ void ArrayHeap::preformFileActions(std::vector<std::string> actionValues)
             dataArray[insertHeapCtr].dataValue = actionValues[i + 1];
             tempString = stoi(actionValues[i + 2]);
             dataArray[insertHeapCtr].priorityValue = tempString;
+            ArrayHeap::heapSort();
             insertHeapCtr++;
-
         }
         else if (actionValues[i] == "R")
         {
@@ -266,6 +267,8 @@ void ArrayHeap::userActions()
 {
     int startPos = 0; 
     char actionOption;
+    std::stringstream ss;
+
     if (ArrayHeap::initSize == ArrayHeap::size)
     {
         std::cout << "Array is full doubling" << std::endl;
@@ -310,7 +313,7 @@ void ArrayHeap::userActions()
         {
         case 'I':
         {
-            std::string tempString;
+            std::string tempString, userString;
             int tempPriority;
 
             std::cout << "Enter string data: ";
@@ -323,27 +326,54 @@ void ArrayHeap::userActions()
 
             dataArray[i].dataValue = tempString;
             dataArray[i].priorityValue = tempPriority;
+            ArrayHeap::heapSort();
+
+
+            userActionValues.push_back("I ");
+            userActionValues.push_back(tempString + " ");
+            userString = std::to_string(tempPriority);
+            userActionValues.push_back(userString + "\n");
 
             std::cout << "String data: " << tempString << ", Priority: " << tempPriority << std::endl << std::endl;
+            ss << "String data: " << tempString << ", Priority: " << tempPriority << std::endl << std::endl;
+            std::string iOption = ss.str();
+            userActionValues.push_back(iOption);
+
+            ss.str("");
+            ss.clear();
+            userRequestedInserts++;
             i++;
         }
         break;
 
         case 'R':
         {
+            userActionValues.push_back("R");
             dataArray[1].dataValue = "";
             dataArray[1].priorityValue = NULL;
+
+            userRequestedRemoves++;
         }
         break;
 
         case 'S':
         {
+            userActionValues.push_back("S ");
             std::cout << "Top element is: " << "(" << "\"" << dataArray[1].dataValue << "\"" << "," << dataArray[1].priorityValue << ")" << std::endl;
+            ss << "Top element is: " << "(" << "\"" << dataArray[1].dataValue << "\"" << "," << dataArray[1].priorityValue << ")" << std::endl;
+            std::string sOption = ss.str();
+            userActionValues.push_back(sOption);
+
+            ss.str("");
+            ss.clear();
+            userRequestedTop++;
         }
         break;
 
         case 'A':
         {
+            userActionValues.push_back("A");
+            userRequestedPrint++;
             ArrayHeap::toString();
         }
         break;
@@ -361,33 +391,54 @@ void ArrayHeap::userActions()
 
 void PriorityQueue::printStats()
 {
-    std::ofstream outputFile(PriorityQueue::outputFile, std::ios::app);
+    //std::ofstream outputFile(PriorityQueue::outputFile, std::ios::app);
+    std::ifstream file("file.txt");
+    int totalUserHeapActions = userRequestedInserts + userRequestedRemoves + userRequestedTop + userRequestedPrint;
 
+    if (!file.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+
+    std::cout << std::endl;
     std::cout << "Heap created with size: " << PriorityQueue::size << std::endl;
     std::cout << "Priority Queue Initialization" << std::endl;
-    std::cout << ElementsInserted << " elements inserted" << std::endl;
-    std::cout << PriorityQueue::initHeapDown << " number of heap-down actions to create heap order" << std::endl;
-    //Print Queue if number of elements is less than or equal 20
-    std::cout << "Priority Queue Initialization complete" << std::endl;
-    //Print action file and result of action
+    std::cout << " Elements inserted: " << PriorityQueue::ElementsInserted << std::endl;
+    std::cout << " Number of heap-down actions to create heap order: " << PriorityQueue::initHeapDown << std::endl << std::endl;
+
+    if (PriorityQueue::size <= 20)
+    {
+        PriorityQueue::toString();
+        std::cout << std::endl;
+    }
+
+    std::cout << "Priority Queue Initialization complete" << std::endl << std::endl;
+    std::cout << "User Action File " << std::endl;
+    std::string line;
+    while (std::getline(file, line)) {
+        std::cout << line << std::endl;
+    }
    
     std::cout << "User Action File Complete" << std::endl << std::endl;
-    std::cout << "User Action Interface" << std::endl; //List Action and result of action
+    std::cout << "User Action Interface" << std::endl << std::endl; 
 
-    //______________________________________________________________________________________________________________________//
+    for (int i = 0; i < userActionValues.size(); i++)
+    {
+        std::cout << userActionValues[i];
+    }
+    std::cout << "User Action Interface Complete" << std::endl << std::endl; 
+
+    std::cout << "Total number of Inserts - Initialization: " << PriorityQueue::ElementsInserted << std::endl;
+    std::cout << "Total number of heap-down actions - Initialization: " << PriorityQueue::initHeapDown << std::endl;
+    std::cout << "Total number of user requested Inserts: " << PriorityQueue::userRequestedInserts << std::endl;
+    std::cout << "Total number of user requested Removes: " << PriorityQueue::userRequestedRemoves << std::endl;
+    std::cout << "Total number of user requested Return Top: " << PriorityQueue::userRequestedTop << std::endl;
+    std::cout << "Total number of user requested Print: " << PriorityQueue::userRequestedPrint << std::endl;
+    std::cout << "Total number of heap actions for user actions: " << totalUserHeapActions << std::endl;
+    std::cout << "     Total number of heap-up actions:          " << PriorityQueue::totalHeapUp << std::endl;
+    std::cout << "     Total number of heap-down actions:        " << PriorityQueue::totalHeapDown << std::endl;
 
 
-    outputFile << "Heap created with size: " << PriorityQueue::size << std::endl;
-    outputFile << "Priority Queue Initialization" << std::endl;
-    outputFile << ElementsInserted << " elements inserted" << std::endl;
-    outputFile << PriorityQueue::initHeapDown << " number of heap-down actions to create heap order" << std::endl;
-    //Print Queue if number of elements is less than or equal 20
-    outputFile << "Priority Queue Initialization complete" << std::endl;
-    //Print action file and result of action
 
-    outputFile << "User Action File Complete" << std::endl << std::endl;
-    outputFile << "User Action Interface" << std::endl; //List Action and result of action
-
-
-
+    file.close();
 }

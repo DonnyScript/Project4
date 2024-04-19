@@ -25,8 +25,10 @@ class ArrayHeap
 protected:
     priorityData* dataArray;
     int size,initSize;
-    std::string inputFile,outputFile;
-    int ElementsInserted, initHeapDown;
+    std::string inputFile, outputFile;
+    std::vector<std::string> userActionValues;
+    int ElementsInserted = 0, initHeapDown = 0, userRequestedInserts = 0, userRequestedRemoves = 0, userRequestedTop = 0;
+    int userRequestedPrint = 0, totalHeapUp = 0, totalHeapDown = 0;
 public: 
     ArrayHeap() : size(10), initSize(0)
     {

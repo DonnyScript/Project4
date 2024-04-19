@@ -5,7 +5,7 @@ int main()
     int size;
     std::string initFile, actFile, outputFile;
     char initOption, actionOption;
-    PriorityQueue* heap = nullptr;
+    PriorityQueue* heapQueue = nullptr;
     std::vector<std::string> inputData;
     std::vector<std::string> actionData;
     priorityData returnedElement, removedElement;
@@ -32,7 +32,7 @@ int main()
     {
     case 'D':
     {
-        heap = new PriorityQueue();
+        heapQueue = new PriorityQueue();
     }
     break;
 
@@ -42,7 +42,7 @@ int main()
         std::cin >> size;
         checkInt(size);
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        heap = new PriorityQueue(size);
+        heapQueue = new PriorityQueue(size);
     }
     break;
 
@@ -53,9 +53,9 @@ int main()
     std::cout << "What is the name of your input file: ";
     std::getline(std::cin, initFile);
     initFile += ".txt";
-    inputData = heap->readandCheckAction(initFile);
-    heap->initialHeapFill(inputData);
-    heap->heapSort(); 
+    inputData = heapQueue->readandCheckAction(initFile);
+    heapQueue->initialHeapFill(inputData);
+    heapQueue->heapSort(); 
 
     while (true)
     {
@@ -79,7 +79,7 @@ int main()
     {
     case 'U':
     {
-        heap->userActions();
+        heapQueue->userActions();
     }
     break;
 
@@ -88,8 +88,8 @@ int main()
         std::cout << "Input name of action file: ";
         std::getline(std::cin, actFile);
         actFile += ".txt";
-        actionData = heap->readandCheckAction(actFile);
-        heap->preformFileActions(actionData);
+        actionData = heapQueue->readandCheckAction(actFile);
+        heapQueue->preformFileActions(actionData);
     }
     break;
 
@@ -98,10 +98,10 @@ int main()
         std::cout << "Input name of action file: ";
         std::getline(std::cin, actFile);
         actFile += ".txt";
-        actionData = heap->readandCheckAction(actFile);
-        heap->preformFileActions(actionData);
-        heap->userActions();
-        heap->toString();
+        actionData = heapQueue->readandCheckAction(actFile);
+        heapQueue->preformFileActions(actionData);
+        heapQueue->userActions();
+        heapQueue->toString();
     }
     break;
 
@@ -111,9 +111,9 @@ int main()
 
     std::cout << "Input name of output file: ";
     std::getline(std::cin, outputFile);
-    heap->setOutputFile(outputFile);
-
-    delete heap;
+    heapQueue->setOutputFile(outputFile);
+    heapQueue->printStats();
+    delete heapQueue;
 
     return 0;
 }
